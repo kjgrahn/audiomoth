@@ -1,0 +1,87 @@
+.ss 12 0
+.de BP
+.IP \\fB\\$*
+..
+.
+.TH audiomoth 1 "JAN 2021" AudioMoth "User Manuals"
+.SH "NAME"
+audiomoth \- command-line interface to the AudioMoth acoustic logger
+.
+.SH "SYNOPSIS"
+.
+.B audiomoth
+\&...
+.br
+.B audiomoth --help
+.br
+.B audiomoth --version
+.
+.SH "DESCRIPTION"
+.
+The
+.B AudioMoth
+is an acoustic logger from
+.IR "Open Acoustic Devices" .
+This utility lets you configure an AudioMoth and set its clock, like the official utilities
+but without pulling in the whole
+.I Node.js
+and
+.I React.js
+ecosystems,
+.\" "Ecosystem" may be a too polite word.
+and without a GUI.
+.
+.
+.SH "OPTIONS"
+.
+.
+.BP --help
+Print a brief help text and exit.
+.
+.BP --version
+Print version information and exit.
+.
+.
+.SH "NOTES"
+.
+.
+.SH "AUTHOR"
+.
+J\(:orgen Grahn
+.IR \[fo]grahn@snipabacken.se\[fc] .
+.
+.SH "LICENSE"
+The GNU General Public License (GPL) version 2 or (at your option) version 3.
+.
+.SH "SEE ALSO"
+.
+.IR \[fo]https://www.openacousticdevices.info/audiomoth\[fc] .
+.
+.
+.ig
+
+galium:git/audiomoth% lsusb
+Bus 002 Device 005: ID 10c4:0002 Silicon Labs F32x USBXpress Device
+...
+
+# ./usbhidtool 0x10C4 0x0002 0x00 0x01
+  01 2b 00 ... [64]
+
+01 5b da 30 00 ... [64]
+
+# ./usbhidtool 0x10C4 0x0002 0x00 0x04
+  01 2b 00 ... [64]
+
+04 06 00 ... [64]
+
+# ./usbhidtool 0x10C4 0x0002 0x00 0x03
+  01 2b 00 ... [64]
+
+03 fe b5 37 60 02 9b 8d 24 00 ... [64]
+
+# ./usbhidtool 0x10C4 0x0002 0x00 0x08
+  01 2b 00 ... [64]
+
+08 41 75 64 69 6f 4d 6f 74 68 2d 46 69 72 6d 77 61 72 65 2d 42 61 73 69 63 00 ... [64]
+AudioMoth-...ic
+..
