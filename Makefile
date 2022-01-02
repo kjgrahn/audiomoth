@@ -30,7 +30,7 @@ libaudiomoth.a: deviceinfo.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
-	$(CXX) $(CXXFLAGS) -o $@ audiomoth.o -L. -laudiomoth
+	$(CXX) $(CXXFLAGS) -o $@ audiomoth.o -L. -laudiomoth -lhidapi-hidraw
 
 libtest.a: test/foo.o
 libtest.a: test/foo.o
