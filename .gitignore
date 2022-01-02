@@ -1,0 +1,7 @@
+audiomoth
+test/test
+test/test.cc
+*.o
+lib*.a
+dep/
+TAGS
