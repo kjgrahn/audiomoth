@@ -26,9 +26,7 @@ check: tests
 checkv: tests
 	valgrind -q ./tests -v
 
-libaudiomoth.a: foo.o
-libaudiomoth.a: foo.o
-libaudiomoth.a: foo.o
+libaudiomoth.a: deviceinfo.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
