@@ -23,6 +23,7 @@
 #include <string>
 
 #include <getopt.h>
+#include <hidapi/hidapi.h>
 
 #include "deviceinfo.h"
 
@@ -74,7 +75,8 @@ int main(int argc, char ** argv)
 	    break;
 	case 'V':
 	    std::cout << "audiomoth " << version() << '\n'
-		      << "Copyright (c) 2022 J. Grahn.\n"
+		      << "Uses libhidapi " << hid_version_str() << '\n'
+		      << "Copyright (c) 2022 J. Grahn. "
 		      << "All rights reserved.\n";
 	    return 0;
 	    break;
