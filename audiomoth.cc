@@ -26,6 +26,8 @@
 #include <hidapi/hidapi.h>
 
 #include "deviceinfo.h"
+#include "device.h"
+#include "message.h"
 
 namespace {
 
@@ -34,40 +36,60 @@ namespace {
 	return "1.0";
     }
 
+    int info(hid::Device& dev, std::ostream& os)
+    {
+	os << "time:     " << write(dev, tx::GetTime{}) << '\n'
+	   << "battery:  " << write(dev, tx::GetBattery{}) << '\n'
+	   << "uid:      " << write(dev, tx::GetUid{}) << '\n'
+	   << "firmware: " << write(dev, tx::GetFirmwareDescription{}) << '\n'
+	   << "version:  " << write(dev, tx::GetFirmwareVersion{}) << '\n';
+	return 0;
+    }
+
+    int set_time(hid::Device& dev, std::ostream& os,
+		 const std::time_t t)
+    {
+	const auto resp = write(dev, tx::SetTime{t});
+	os << resp << '\n';
+	return 0;
+    }
 }
 
 int main(int argc, char ** argv)
 {
+    std::cin.sync_with_stdio(false);
+    std::cout.sync_with_stdio(false);
+
     const std::string prog = argv[0] ? argv[0] : "audiomoth";
     const std::string usage = std::string("usage: ")
-	+ prog + " [-u user] [-o file] [file]\n"
+	+ prog + " [-i]\n"
+	"       "
+	+ prog + " -T\n"
 	"       "
 	+ prog + " --help\n"
 	"       "
 	+ prog + " --version";
-    const char optstring[] = "u:o:";
+    const char optstring[] = "iT";
     const struct option long_options[] = {
 	{"help", 0, 0, 'H'},
 	{"version", 0, 0, 'V'},
 	{0, 0, 0, 0}
     };
 
-    std::cin.sync_with_stdio(false);
-    std::cout.sync_with_stdio(false);
-
-    std::string user;
-    std::string outfile;
+    struct {
+	bool set_time = false;
+    } opt;
 
     int ch;
     while ((ch = getopt_long(argc, argv,
 			     optstring,
 			     &long_options[0], 0)) != -1) {
 	switch(ch) {
-	case 'u':
-	    user = optarg;
+	case 'i':
+	    opt.set_time = false;
 	    break;
-	case 'o':
-	    outfile = optarg;
+	case 'T':
+	    opt.set_time = true;
 	    break;
 	case 'H':
 	    std::cout << usage << '\n';
@@ -89,16 +111,30 @@ int main(int argc, char ** argv)
 	}
     }
 
-    const std::vector<char*> files(argv+optind, argv+argc);
-    if (files.size() > 1) {
+    if (optind != argc) {
 	std::cerr << "error: too many arguments\n"
 		  << usage << '\n';
 	return 1;
     }
 
-    auto& os = std::cout;
-    for (const auto& di : hid::enumerate(0x10c4, 0x0002)) {
-	os << di.path << '\n';
+    hid::Device dev {0x10c4, 0x0002};
+    if (!dev) {
+	std::cerr << "error: failed to connect to AudioMoth: " << dev.error << '\n';
+	return 1;
+    }
+
+    try {
+	auto& os = std::cout;
+
+	if (opt.set_time) {
+	    return set_time(dev, os, std::time(nullptr));
+	}
+
+	return info(dev, os);
+    }
+    catch (const hid::Error&) {
+	std::cerr << "error: " << dev.error << '\n';
+	return 1;
     }
 
     return 0;

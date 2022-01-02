@@ -10,6 +10,11 @@ audiomoth \- command-line interface to the AudioMoth acoustic logger
 .SH "SYNOPSIS"
 .
 .B audiomoth
+.RB [ \-i ]
+.br
+.B audiomoth
+.B \-T
+.br
 \&...
 .br
 .B audiomoth --help
@@ -20,19 +25,71 @@ audiomoth \- command-line interface to the AudioMoth acoustic logger
 .
 The
 .B AudioMoth
-is an acoustic logger from
+is an acoustic logger for outdoors use from
 .IR "Open Acoustic Devices" .
-This utility lets you configure an AudioMoth and set its clock, like the official utilities
+This utility lets you configure an AudioMoth and set its clock
+\- like the official utilities,
 but without pulling in the whole
 .I Node.js
 and
 .I React.js
 ecosystems,
-.\" "Ecosystem" may be a too polite word.
+.\" "Ecosystem" may be too polite a word ...
 and without a GUI.
+.\" And without the phone-home feature.
+.\" I.e. the HTTP calls in versionChecker.js.  Do people accept such
+.\" things nowadays?
+.PP
+.BR audiomoth (1)
+has four basic operations:
+.IP \- 2x
+Show the device's
+.IR "time" ,
+.IR "battery level" ,
+.I  "identifier"
+and
+.IR "firmware version" .
+.IP \-
+Set the device's clock.
+This is a common operation, since the AudioMoth loses time when you
+replace the batteries.
+.IP \-
+Show the configuration, e.g. recording schedule and gain.
+.IP \-
+Configure the device.
+.PP
+It cannot be used to upgrade the firmware.
 .
 .
 .SH "OPTIONS"
+.
+.BP \-i
+Show the device's
+.IR "time" ,
+.IR "battery level" ,
+.I  "identifier"
+and
+.IR "firmware version" ,
+i.e. everything except the configuration.
+This is also what happens when you run it without arguments.
+The output looks something like this:
+.
+.IP
+.ft CW
+.nf
+time:     2022-01-07 11:14:58
+battery:  4.1V
+uid:      fe:b5:37:60:02:9b:8d:24
+firmware: AudioMoth-Firmware-Basic
+version:  1.5.0
+.fi
+.
+.BP \-T
+Set the clock from the computer's clock.
+The AudioMoth clock has a one second resolution, and unlike the
+official utilities, this one doesn't try to get more accuracy by
+waiting until the second flips over.
+Thus the clock can be slightly more than one second off.
 .
 .
 .BP --help
@@ -42,13 +99,18 @@ Print a brief help text and exit.
 Print version information and exit.
 .
 .
-.SH "NOTES"
-.
-.
 .SH "AUTHOR"
 .
 J\(:orgen Grahn
 .IR \[fo]grahn@snipabacken.se\[fc] .
+.PP
+.BR audiomoth (1)
+uses
+.B libhidapi
+for USB access, and is (since there appears to be no firmware API documentation)
+based on the
+.I "Open Acoustic Devices"
+Javascript code.
 .
 .SH "LICENSE"
 The GNU General Public License (GPL) version 2 or (at your option) version 3.

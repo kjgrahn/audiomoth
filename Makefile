@@ -27,6 +27,10 @@ checkv: tests
 	valgrind -q ./tests -v
 
 libaudiomoth.a: deviceinfo.o
+libaudiomoth.a: device.o
+libaudiomoth.a: time.o
+libaudiomoth.a: message.o
+libaudiomoth.a: rx.o
 libaudiomoth.a: utf8.o
 	$(AR) $(ARFLAGS) $@ $^
 
@@ -34,6 +38,8 @@ audiomoth: audiomoth.o libaudiomoth.a
 	$(CXX) $(CXXFLAGS) -o $@ audiomoth.o -L. -laudiomoth -lhidapi-hidraw
 
 libtest.a: test/utf8.o
+libtest.a: test/endian.o
+libtest.a: test/time.o
 	$(AR) $(ARFLAGS) $@ $^
 
 test/%.o: CPPFLAGS+=-I.
