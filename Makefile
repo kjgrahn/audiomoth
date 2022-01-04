@@ -27,14 +27,13 @@ checkv: tests
 	valgrind -q ./tests -v
 
 libaudiomoth.a: deviceinfo.o
+libaudiomoth.a: utf8.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
 	$(CXX) $(CXXFLAGS) -o $@ audiomoth.o -L. -laudiomoth -lhidapi-hidraw
 
-libtest.a: test/foo.o
-libtest.a: test/foo.o
-libtest.a: test/foo.o
+libtest.a: test/utf8.o
 	$(AR) $(ARFLAGS) $@ $^
 
 test/%.o: CPPFLAGS+=-I.

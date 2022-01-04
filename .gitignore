@@ -1,6 +1,6 @@
 audiomoth
-test/test
-test/test.cc
+tests
+test.cc
 *.o
 lib*.a
 dep/
