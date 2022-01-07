@@ -38,6 +38,7 @@ libaudiomoth.a: split.o
 libaudiomoth.a: ranges.o
 libaudiomoth.a: cfg/timeperiods.o
 libaudiomoth.a: cfg/passfilter.o
+libaudiomoth.a: cfg/gain.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
@@ -51,6 +52,7 @@ libtest.a: test/endian.o
 libtest.a: test/time.o
 libtest.a: test/timeperiods.o
 libtest.a: test/passfilter.o
+libtest.a: test/gain.o
 	$(AR) $(ARFLAGS) $@ $^
 
 test/%.o: CPPFLAGS+=-I.
