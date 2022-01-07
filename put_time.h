@@ -10,5 +10,6 @@
 #include <ctime>
 
 std::ostream& put_time(std::ostream& os, const time_t t);
+std::ostream& put_utc(std::ostream& os, const time_t t);
 
 #endif
