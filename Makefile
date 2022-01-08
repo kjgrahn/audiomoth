@@ -34,6 +34,7 @@ libaudiomoth.a: message.o
 libaudiomoth.a: rx.o
 libaudiomoth.a: utf8.o
 libaudiomoth.a: hexdump.o
+libaudiomoth.a: split.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
@@ -41,6 +42,7 @@ audiomoth: audiomoth.o libaudiomoth.a
 
 libtest.a: test/utf8.o
 libtest.a: test/hexdump.o
+libtest.a: test/split.o
 libtest.a: test/endian.o
 libtest.a: test/time.o
 	$(AR) $(ARFLAGS) $@ $^
