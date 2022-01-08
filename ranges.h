@@ -13,11 +13,13 @@
  * empty range and there's a hole between Range(1, 2) and Range(3, 4).
  */
 struct Range {
+    Range() = default;
     Range(unsigned a, unsigned b) : a{a}, b{b} {}
     unsigned a = 0;
     unsigned b = 0;
     bool merge(const Range& other);
     bool operator< (const Range& other) const;
+    explicit operator bool () const { return a!=b; }
 };
 
 /**

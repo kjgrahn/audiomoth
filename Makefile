@@ -36,6 +36,7 @@ libaudiomoth.a: utf8.o
 libaudiomoth.a: hexdump.o
 libaudiomoth.a: split.o
 libaudiomoth.a: ranges.o
+libaudiomoth.a: cfg/timeperiods.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
@@ -47,6 +48,7 @@ libtest.a: test/split.o
 libtest.a: test/ranges.o
 libtest.a: test/endian.o
 libtest.a: test/time.o
+libtest.a: test/timeperiods.o
 	$(AR) $(ARFLAGS) $@ $^
 
 test/%.o: CPPFLAGS+=-I.
@@ -65,7 +67,7 @@ TAGS:
 .PHONY: clean
 clean:
 	$(RM) audiomoth
-	$(RM) {,test/}*.o
+	$(RM) {,test/,cfg/}*.o
 	$(RM) lib*.a
 	$(RM) test.cc tests
 	$(RM) TAGS
@@ -74,7 +76,7 @@ clean:
 love:
 	@echo "not war?"
 
-$(shell mkdir -p dep/{,test})
+$(shell mkdir -p dep/{,cfg,test})
 DEPFLAGS=-MT $@ -MMD -MP -MF dep/$*.Td
 COMPILE.cc=$(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 COMPILE.c=$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
@@ -88,6 +90,8 @@ COMPILE.c=$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 	@mv dep/$*.{Td,d}
 
 dep/%.d: ;
+dep/cfg/%.d: ;
 dep/test/%.d: ;
 -include dep/*.d
+-include dep/cfg/*.d
 -include dep/test/*.d
