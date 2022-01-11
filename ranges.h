@@ -15,9 +15,13 @@
 struct Range {
     Range() = default;
     Range(unsigned a, unsigned b) : a{a}, b{b} {}
+
     unsigned a = 0;
     unsigned b = 0;
+
     bool merge(const Range& other);
+    Range fold(unsigned n);
+
     bool operator< (const Range& other) const;
     explicit operator bool () const { return a!=b; }
 };

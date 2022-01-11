@@ -63,6 +63,17 @@ namespace cfg {
 			   0, 0);
 	}
 
+	void always(TC)
+	{
+	    TimePeriods tp;
+	    add(tp, "05:30+24:00");
+	    assert_encodes(tp, 1,
+			   0, 1440,
+			   0, 0,
+			   0, 0,
+			   0, 0);
+	}
+
 	void duration(TC)
 	{
 	    TimePeriods tp;
@@ -160,8 +171,21 @@ namespace cfg {
 	    TimePeriods tp;
 	    add(tp, "23:00-01:30");
 	    assert_encodes(tp, 2,
-			      0, 90,
+			      0,   90,
 			   1380, 1440,
+			   0, 0,
+			   0, 0);
+	}
+
+	void midnight_merge(TC)
+	{
+	    TimePeriods tp;
+	    add(tp, "22:00-23:00");
+	    add(tp, "01:30-02:00");
+	    add(tp, "23:00-01:30");
+	    assert_encodes(tp, 2,
+			      0,  120,
+			   1320, 1440,
 			   0, 0,
 			   0, 0);
 	}

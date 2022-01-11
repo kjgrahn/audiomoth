@@ -58,8 +58,11 @@ namespace {
  */
 bool TimePeriods::add(const std::string& s)
 {
-    const Range r = parse(s);
+    Range r = parse(s);
     if (!r) return false;
+
+    Range t = r.fold(1440);
+    if (t) ranges.add(t);
 
     ranges.add(r);
     return true;

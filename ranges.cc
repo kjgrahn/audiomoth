@@ -18,6 +18,23 @@ bool Range::merge(const Range& other)
     return true;
 }
 
+/**
+ * Perform modulo n on the range.  That may split it in two:
+ *                n
+ *     -------####XX
+ *     XX-----####
+ */
+Range Range::fold(unsigned n)
+{
+    a %= n;
+    b %= n;
+    if (!b) b = n;
+    if (a < b) return {};
+    Range first = {0, b};
+    b = n;
+    return first;
+}
+
 bool Range::operator< (const Range& other) const
 {
     if (a==other.a) return b < other.b;

@@ -24,8 +24,7 @@ namespace cfg {
      *   05:00-07:30
      *   05:00+02:30
      *
-     * TBD what happens to timezones, or how you say you want to
-     * record around midnight.
+     * TBD what happens to timezones.
      */
     class TimePeriods {
     public:
