@@ -255,6 +255,80 @@ or, disable the flashing which indicates battery level.
 Non-zero on failure.
 .
 .
+.SH "COMPARED TO THE OFFICIAL TOOL"
+.
+The official AudioMoth configuration tool has a JSON-based configuration file format.
+.BR audiomoth (1)
+cannot read such files, but it's useful to see how command-line options map to such files,
+since they summarize everything that can be officially configured.
+.
+.PP
+.PD 0
+.
+.IP "timePeriods" 26x
+.B \-t
+.
+.IP "sampleRateIndex"
+.B --rate
+.IP "sampleRate"
+--rate
+.IP "gainIndex"
+.B --gain
+.IP "gain"
+--gain
+.
+.IP "recDuration"
+.B --cyclic
+.IP "recordDuration"
+--cyclic
+.IP "sleepDuration"
+--cyclic
+.
+.IP "localTime"
+.
+.IP "dutyEnabled"
+--cyclic
+.IP "firstRecordingDate"
+.B --dates
+.IP "lastRecordingDate"
+--dates
+.
+.IP "passFiltersEnabled"
+.BR --highpass ", " --lowpass ", " --bandpass
+.IP "filterType"
+--highpass, --lowpass, --bandpass
+.IP "lowerFilter"
+--highpass, --lowpass, --bandpass
+.IP "higherFilter"
+--highpass, --lowpass, --bandpass
+.
+.IP "amplitudeThresholdingEnabled"
+.IP "amplitudeThreshold"
+.IP "minimumAmplitudeThresholdDuration"
+.IP "amplitudeThresholdingScale"
+.
+.IP "version"
+not used
+.IP "displayVoltageRange"
+.BR --NiMH ", " --LiPo ", " --alkaline
+.IP "requireAcousticConfig"
+.B --need-chime
+.IP "ledEnabled"
+.BR --no-rw-led \ (inverted)
+.IP "batteryCheckEnabled"
+apparently a legacy name for lowVoltageCutoffEnabled
+.IP "lowVoltageCutoffEnabled"
+.BR --ignore-low-battery \ (inverted)
+.IP "batteryLevelCheckEnabled"
+.BR --no-battery-led \ (inverted)
+.IP "energySaverModeEnabled"
+.B --energy-saver
+.IP "disable48DCFilter"
+.B --elephants
+.
+.PD
+.
+.
 .SH "BUGS"
 .
 .IP \- 3x
@@ -302,6 +376,9 @@ The GNU General Public License (GPL) version 2 or (at your option) version 3.
 .
 .SH "SEE ALSO"
 .
+.IR "The AudioMoth Operation Manual" .
+Open Acoustic Devices, July 2021.
+.br
 .IR \[fo]https://www.openacousticdevices.info/audiomoth\[fc] .
 .
 .
