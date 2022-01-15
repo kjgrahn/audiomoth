@@ -1,7 +1,8 @@
 .ss 12 0
 .de BP
-.IP \\fB\\$*
+.IP "\\fB\\$*"
 ..
+.hw areas
 .
 .TH audiomoth 1 "JAN 2021" AudioMoth "User Manuals"
 .SH "NAME"
@@ -10,12 +11,20 @@ audiomoth \- command-line interface to the AudioMoth acoustic logger
 .SH "SYNOPSIS"
 .
 .B audiomoth
+.RB [ --uid
+.IR uid ]
 .RB [ \-i ]
 .br
 .B audiomoth
+.RB [ --uid
+.IR uid ]
 .B \-T
 .br
-\&...
+.B audiomoth
+.RB [ --uid
+.IR uid ]
+.RI [ configuration\ options
+\&...]
 .br
 .B audiomoth --help
 .br
@@ -42,7 +51,7 @@ and without a GUI.
 .PP
 .BR audiomoth (1)
 has four basic operations:
-.IP \- 2x
+.IP \- 3x
 Show the device's
 .IR "time" ,
 .IR "battery level" ,
@@ -63,7 +72,7 @@ It cannot be used to upgrade the firmware.
 .
 .SH "OPTIONS"
 .
-.BP \-i
+.BP "\-i"
 Show the device's
 .IR "time" ,
 .IR "battery level" ,
@@ -84,19 +93,195 @@ firmware: AudioMoth-Firmware-Basic
 version:  1.5.0
 .fi
 .
-.BP \-T
+.BP "\-T"
 Set the clock from the computer's clock.
 The AudioMoth clock has a one second resolution, and unlike the
 official utilities, this one doesn't try to get more accuracy by
 waiting until the second flips over.
 Thus the clock can be slightly more than one second off.
 .
+.BP "--uid \fInn:nn:nn:nn:nn:nn:nn:nn"
+Refuse to do anything unless the device has a certain
+.IR uid .
+In particular, refuse to configure it.
+This is useful if you have multiple devices for different purposes,
+and don't want to mix up their configurations.
 .
-.BP --help
+.BP "--help"
 Print a brief help text and exit.
 .
-.BP --version
+.BP "--version"
 Print version information and exit.
+.
+.
+.SS "Configuration options"
+.
+Configuration is, for better or worse, total rather than incremental.
+You cannot e.g. change the time schedule without also deciding the sample rate
+and everything else.
+There are sane defaults for many things, though.
+.PP
+Some of the options are hard to explain without referring to the official
+documentation, which also describes the physical interfaces (the
+.SM USB/OFF/CUSTOM/DEFAULT
+switch, the LEDs) and the naming of recording files.
+.
+.BP "\-t \fIhh:mm\-hh:mm"
+Add a recording period, for example
+.I 04:30\-07:00
+or
+.IR 22:00\-03:00 .
+The device has room for four periods, but a period spanning midnight
+counts as two periods.
+.BP "\-t \fIhh:mm+duration"
+The same, but with the period length (as minutes or hours and minutes)
+instead of the end time:
+.I 04:30\-07:00
+can also be expressed as
+.I 04:30\+2:30
+or
+.IR 04:30\+150 .
+.
+.BP "--time \fR..."
+Synonym for
+.BR \-t ,
+for people who like longer names.
+.
+.BP "--cyclic \fIsleep+record"
+Set up sleep/record cyclic recording. When the device would otherwise have
+recorded continously, it instead sleeps for
+.I sleep
+seconds, records for
+.I record
+seconds, and so on.
+It's a way to sample a soundscape, I guess you could say.
+.IP
+Note the order: the sleep time is given
+.IR first ,
+so that e.g.
+.I 50+10
+records for 10 seconds every minute.
+.
+.BP "--dates \fIfirst--last"
+Record only during the specified dates.
+Dates are given in ISO format with a double
+.B --
+between. For example,
+.I 2022-01-16--2022-01-31
+spans from the start of January, 16 to the end of January.
+.
+.BP "--dates \fIfirst+days"
+As above, but specify a number of days rather than the last day.
+For example,
+.IR 2022-01-16+16 .
+.
+.BP "--gain \-2\fR|\fP\-1\fR|\fP0\fR|\fP\+1\fR|\fP\+2"
+The gain level, from
+.B \-2
+(low) to
+.B +2
+(loud). Default:
+.BR 0 .
+.
+.BP "--rate 8\fR|\fP16\fR|\fP32\fR|\fP48\fR|\fP96\fR|\fP192\fR|\fP250\fR|\fP384 \fR[\fPkHz\fR]"
+The sampling rate. Default:
+.BR 48kHz .
+.
+.PP
+The high-, low- and band-pass filters are mutually exclusive: you can choose one,
+or of course skip filtering entirely.
+.
+.BP "--highpass \fIfreq"
+Enable the
+.IR "high-pass filter" ,
+i.e. record only high-frequency sounds.
+Useful for recording bats, presumably.
+You can specify the frequency with and without decimals, and give the unit as
+.B kHz
+or
+.B Hz
+(default if you say nothing):
+.BR 18000 ,
+.BR 18000Hz ,
+.B 18kHz
+and
+.B 18.0kHz
+mean the same thing.
+.
+.BP "--lowpass \fIfreq"
+Enable the
+.I "low-pass"
+filter: record only lower-frequency sounds.
+.
+.BP "--bandpass \fIfreq\fR\-\fIfreq"
+Enable the
+.I "band-pass"
+filter: record in a specific frequency band.
+.
+.BP "--elephants"
+Disable the filter which removes very low frequency buzz.
+This is supposedly useful when recording elephants.
+.
+.BP "--need-chime"
+In
+.SM CUSTOM
+mode, don't start the recording program
+until the device has heard the chime from some smartphone app.
+.
+.BP "--energy-saver"
+Trade some (not much, apparently) audio quality for longer battery time:
+around 30\-40% better.
+At sampling rates above 48\|kHz there are no savings.
+.
+.BP "--ignore-low-battery"
+Keep recording when the battery runs low.
+This can cause corrupted recordings
+(but it's unclear whether anyone knows how high the risk is).
+.
+.BP "--NiMH\fR, \fP--LiPo\fR, \fP--alkaline"
+The battery type.  This only affects the battery level indication and,
+as far as I can tell, specifically the flashing LEDs.
+NiMH and LiPo are, for these purposes, the same thing.
+Default:
+.BR --alkaline .
+.
+.BP "--no-rw-led\fR, \fP--no-battery-led"
+Disable the LED flashing which indicates if the device is recording or waiting to record,
+or, disable the flashing which indicates battery level.
+.
+.
+.SH "EXIT STATUS"
+.
+Non-zero on failure.
+.
+.
+.SH "BUGS"
+.
+.IP \- 3x
+The official utility shows projected battery lifetime based on sampling rate
+and other settings.  This one does not, although it may be vital information to
+some users. When should I drive the 200 kilometers to switch batteries?
+For how long can I record every morning, if I want to cover all of June?
+.
+.IP \-
+.I "Amplitude threshold recording"
+\- letting loud or distinct sounds start the recording \-
+is still unsupported.
+.
+.IP \-
+Anything having to do with time zones is unsupported:
+.BR audiomoth (1)
+configures the device to use UTC, also known as GMT.
+It's a bit unclear how configuring a time zone affects the device;
+possible areas include file names and file timestamps,
+the recording periods and the recording dates.
+That may be fixed eventually, but for now you have to plan recordings
+in terms of UTC.
+.
+.IP \-
+It is unclear how to handle multiple devices attached to one computer;
+The official utilities pick the first listed on the USB bus,
+and so does this one.
 .
 .
 .SH "AUTHOR"
