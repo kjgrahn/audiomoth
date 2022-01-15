@@ -36,6 +36,7 @@ libaudiomoth.a: utf8.o
 libaudiomoth.a: hexdump.o
 libaudiomoth.a: split.o
 libaudiomoth.a: ranges.o
+libaudiomoth.a: cfg/config.o
 libaudiomoth.a: cfg/timeperiods.o
 libaudiomoth.a: cfg/cyclic.o
 libaudiomoth.a: cfg/dates.o
@@ -53,6 +54,7 @@ libtest.a: test/split.o
 libtest.a: test/ranges.o
 libtest.a: test/endian.o
 libtest.a: test/time.o
+libtest.a: test/config.o
 libtest.a: test/timeperiods.o
 libtest.a: test/cyclic.o
 libtest.a: test/timezone.o
