@@ -54,6 +54,7 @@ libtest.a: test/endian.o
 libtest.a: test/time.o
 libtest.a: test/timeperiods.o
 libtest.a: test/cyclic.o
+libtest.a: test/timezone.o
 libtest.a: test/passfilter.o
 libtest.a: test/gain.o
 libtest.a: test/samplerate.o
