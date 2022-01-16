@@ -28,6 +28,7 @@
 #include "deviceinfo.h"
 #include "device.h"
 #include "message.h"
+#include "cfg/config.h"
 
 namespace {
 
@@ -62,35 +63,71 @@ int main(int argc, char ** argv)
 
     const std::string prog = argv[0] ? argv[0] : "audiomoth";
     const std::string usage = std::string("usage: ")
-	+ prog + " [-i]\n"
+	+ prog + " [--uid uid] [-i]\n"
 	"       "
-	+ prog + " -T\n"
+	+ prog + " [--uid uid] -T\n"
+	"       "
+	+ prog + " [--uid uid] [config options ...]\n"
 	"       "
 	+ prog + " --help\n"
 	"       "
 	+ prog + " --version";
-    const char optstring[] = "iT";
+    const char optstring[] = "iTt:";
     const struct option long_options[] = {
-	{"help", 0, 0, 'H'},
+	{"uid",    1,0, 'u'},
+	{"cyclic", 1,0, 'C'},        {"highpass", 1,0,'p'},
+	{"dates",  1,0, 'D'},        {"lowpass",  1,0,'q'},
+	{"gain",   1,0, 'G'},        {"bandpass", 1,0,'r'},
+	{"rate",   1,0, 'R'},
+	{"elephants",    0,0, 'E'},  {"NiMH",     0,0,'N'},
+	{"need-chime",   0,0, '*'},  {"LiPo",     0,0,'N'},
+	{"energy-saver", 0,0, 'e'},  {"alkaline", 0,0,'a'},
+	{"ignore-low-battery", 0,0, 'b'},
+	{"no-rw-led",          0,0, 'L'},
+	{"no-battery-led",     0,0, 'B'},
+	{"help",    0, 0, 'H'},
 	{"version", 0, 0, 'V'},
 	{0, 0, 0, 0}
     };
 
     struct {
 	bool set_time = false;
+	bool configure = false;
+	std::string uid;
     } opt;
+    Config c;
 
     int ch;
     while ((ch = getopt_long(argc, argv,
 			     optstring,
 			     &long_options[0], 0)) != -1) {
 	switch(ch) {
-	case 'i':
-	    opt.set_time = false;
-	    break;
-	case 'T':
-	    opt.set_time = true;
-	    break;
+	case 'i': opt.set_time  = false;
+		  opt.configure = false;
+		  break;
+	case 'T': opt.set_time  = true;
+		  opt.configure = false;
+		  break;
+	case 'u': opt.uid = optarg; break;
+
+	case 't': c.periods.add(optarg); break;
+	case 'C': c.cyclic = cfg::Cyclic {optarg}; break;
+	case 'D': c.dates = cfg::Dates {optarg}; break;
+	case 'G': c.gain = cfg::Gain {optarg}; break;
+	case 'R': c.samplerate = cfg::SampleRate {optarg}; break;
+	case 'p': c.filter = {cfg::PassFilter::HIGH, optarg}; break;
+	case 'q': c.filter = {cfg::PassFilter::LOW, optarg}; break;
+	case 'r': c.filter = {cfg::PassFilter::BAND, optarg}; break;
+
+	case 'E': c.elephants = true; break;
+	case '*': c.need_chime = true; break;
+	case 'e': c.save_energy = true; break;
+	case 'N': c.nimh_batteries = true; break;
+	case 'a': c.nimh_batteries = false; break;
+	case 'b': c.ignore_low_battery = true; break;
+	case 'L': c.rw_led = false; break;
+	case 'B': c.battery_led = false; break;
+
 	case 'H':
 	    std::cout << usage << '\n';
 	    return 0;
@@ -98,7 +135,7 @@ int main(int argc, char ** argv)
 	case 'V':
 	    std::cout << "audiomoth " << version() << '\n'
 		      << "Uses libhidapi " << hid_version_str() << '\n'
-		      << "Copyright (c) 2022 J. Grahn. "
+		      << "Copyright (c) 2022 Jörgen Grahn. "
 		      << "All rights reserved.\n";
 	    return 0;
 	    break;
@@ -107,6 +144,17 @@ int main(int argc, char ** argv)
 	default:
 	    std::cerr << usage << '\n';
 	    return 1;
+	    break;
+	}
+
+	switch(ch) {
+	case 'i':
+	case 'T':
+	case 'u':
+	    break;
+	default:
+	    opt.set_time  = false;
+	    opt.configure = true;
 	    break;
 	}
     }
