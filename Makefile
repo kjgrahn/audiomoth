@@ -60,6 +60,7 @@ libtest.a: test/dates.o
 libtest.a: test/passfilter.o
 libtest.a: test/gain.o
 libtest.a: test/samplerate.o
+libtest.a: test/flag.o
 	$(AR) $(ARFLAGS) $@ $^
 
 test/%.o: CPPFLAGS+=-I.
