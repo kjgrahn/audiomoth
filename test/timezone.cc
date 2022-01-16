@@ -21,8 +21,8 @@ namespace cfg {
     {
 	orchis::assert_true(tz.valid());
 	std::vector<uint8_t> v;
-	tz.encode_a(std::back_inserter(v));
-	tz.encode_b(std::back_inserter(v));
+	tz.a().encode(std::back_inserter(v));
+	tz.b().encode(std::back_inserter(v));
 
 	auto p = begin(v);
 	assert_eq(le::get8(p), a);

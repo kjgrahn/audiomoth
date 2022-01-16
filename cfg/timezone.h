@@ -21,17 +21,25 @@ namespace cfg {
     public:
 	bool valid() const { return true; }
 
-	template <class It> It encode_a(It p) const;
-	template <class It> It encode_b(It p) const;
+	struct Hours {
+	    template <class It> It encode(It p) const;
+	};
+
+	struct Minutes {
+	    template <class It> It encode(It p) const;
+	};
+
+	Hours a() const { return {}; }
+	Minutes b() const { return {}; }
     };
 
-    template <class It> It Timezone::encode_a(It p) const
+    template <class It> It Timezone::Hours::encode(It p) const
     {
 	le::put8(p, 0);
 	return p;
     }
 
-    template <class It> It Timezone::encode_b(It p) const
+    template <class It> It Timezone::Minutes::encode(It p) const
     {
 	le::put8(p, 0);
 	return p;

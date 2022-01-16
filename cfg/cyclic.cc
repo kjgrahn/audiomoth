@@ -39,3 +39,13 @@ bool Cyclic::valid() const
 {
     return (sleep | record) != INVALID;
 }
+
+Cyclic::Values::Values(uint16_t sleep, uint16_t record)
+    : sleep {sleep},
+      record {record}
+{}
+
+Cyclic::Enabled::Enabled(uint16_t sleep, uint16_t record)
+    : sleep {sleep},
+      record {record}
+{}

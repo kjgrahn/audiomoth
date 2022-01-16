@@ -20,6 +20,22 @@ namespace cfg {
      * used to pad out the configuration message.
      */
     class Trigger {
+    public:
+
+	struct A {
+	    template <class It> It encode(It p) const;
+	};
+	A a() const;
+
+	struct B {
+	    unsigned encode() const;
+	};
+	B b() const;
+
+	struct C {
+	    template <class It> It encode(It p) const;
+	};
+	C c() const;
     };
 }
 
