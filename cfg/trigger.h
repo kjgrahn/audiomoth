@@ -6,6 +6,8 @@
 #ifndef AUDIOMOTH_CFG_TRIGGER_H
 #define AUDIOMOTH_CFG_TRIGGER_H
 
+#include "../endians.h"
+
 #include <string>
 #include <iosfwd>
 
@@ -21,22 +23,35 @@ namespace cfg {
      */
     class Trigger {
     public:
+	bool valid() const { return true; }
 
 	struct A {
 	    template <class It> It encode(It p) const;
 	};
-	A a() const;
+	A a() const { return {}; }
 
 	struct B {
-	    unsigned encode() const;
+	    unsigned encode() const { return 0; }
 	};
-	B b() const;
+	B b() const { return {}; }
 
 	struct C {
 	    template <class It> It encode(It p) const;
 	};
-	C c() const;
+	C c() const { return {}; }
     };
+
+    template <class It> It Trigger::A::encode(It p) const
+    {
+	le::put16(p, 0);
+	return p;
+    }
+
+    template <class It> It Trigger::C::encode(It p) const
+    {
+	le::put16(p, 0);
+	return p;
+    }
 }
 
 std::ostream& operator<< (std::ostream& os, const cfg::Trigger& val);
