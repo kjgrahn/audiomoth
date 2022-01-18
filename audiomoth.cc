@@ -19,6 +19,7 @@
  *
  */
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <string>
 
@@ -46,6 +47,19 @@ namespace {
 	    return os << "error: bad option " << p->name;
 	}
 	return os << "error: bad --" << p->name << " argument \"" << arg << '"';
+    }
+
+    bool wrong_uid(hid::Device& dev, std::ostream& os, const std::string& ref)
+    {
+	if (ref.empty()) return false;
+
+	std::ostringstream oss;
+	oss << write(dev, tx::GetUid{});
+	const auto uid = oss.str();
+	if (uid==ref) return false;
+
+	os << "error: uid mismatch: " << uid << '\n';
+	return true;
     }
 
     int info(hid::Device& dev, std::ostream& os)
@@ -204,11 +218,19 @@ int main(int argc, char ** argv)
     try {
 	auto& os = std::cout;
 
+	if (wrong_uid(dev, std::cerr, opt.uid)) {
+	    return 1;
+	}
+
 	if (opt.set_time) {
 	    return set_time(dev, os, std::time(nullptr));
 	}
-
-	return info(dev, os);
+	else if (opt.configure) {
+	    // ...
+	}
+	else {
+	    return info(dev, os);
+	}
     }
     catch (const hid::Error&) {
 	std::cerr << "error: " << dev.error << '\n';
