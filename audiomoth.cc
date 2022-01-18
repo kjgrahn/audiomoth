@@ -37,6 +37,17 @@ namespace {
 	return "1.0";
     }
 
+    std::ostream& complain(std::ostream& os, const option* p,
+			   int ch, const char* arg)
+    {
+	while(p->val && p->val != ch) p++;
+	if (!p->val) return os;
+	if (!p->has_arg) {
+	    return os << "error: bad option " << p->name;
+	}
+	return os << "error: bad --" << p->name << " argument \"" << arg << '"';
+    }
+
     int info(hid::Device& dev, std::ostream& os)
     {
 	os << "time:     " << write(dev, tx::GetTime{}) << '\n'
@@ -75,6 +86,7 @@ int main(int argc, char ** argv)
     const char optstring[] = "iTt:";
     const struct option long_options[] = {
 	{"uid",    1,0, 'u'},
+	{"time",   1,0, 't'},
 	{"cyclic", 1,0, 'C'},        {"highpass", 1,0,'p'},
 	{"dates",  1,0, 'D'},        {"lowpass",  1,0,'q'},
 	{"gain",   1,0, 'G'},        {"bandpass", 1,0,'r'},
@@ -110,7 +122,13 @@ int main(int argc, char ** argv)
 		  break;
 	case 'u': opt.uid = optarg; break;
 
-	case 't': c.periods.add(optarg); break;
+	case 't': if (!c.periods.add(optarg)) {
+		      std::cerr << "error: bad time period " << optarg << '\n'
+				<< usage << '\n';
+		      return 1;
+		  }
+	          break;
+
 	case 'C': c.cyclic = cfg::Cyclic {optarg}; break;
 	case 'D': c.dates = cfg::Dates {optarg}; break;
 	case 'G': c.gain = cfg::Gain {optarg}; break;
@@ -156,6 +174,18 @@ int main(int argc, char ** argv)
 	    opt.set_time  = false;
 	    opt.configure = true;
 	    break;
+	}
+
+	if (!c.valid()) {
+	    /* Ignoring the possibility that further options may make
+	     * it valid again: there's no good reason to feed bad
+	     * options ... and here's a convincing reason not to.
+	     */
+	    complain(std::cerr,
+		     long_options,
+		     ch, optarg) << '\n'
+				 << usage << '\n';
+	    return 1;
 	}
     }
 
