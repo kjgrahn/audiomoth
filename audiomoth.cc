@@ -30,6 +30,7 @@
 #include "device.h"
 #include "message.h"
 #include "cfg/config.h"
+#include "put_time.h"
 
 namespace {
 
@@ -77,6 +78,19 @@ namespace {
     {
 	const auto resp = write(dev, tx::SetTime{t});
 	os << resp << '\n';
+	return 0;
+    }
+
+    int configure(hid::Device& dev, std::ostream& os,
+		  const Config& c, const std::time_t t)
+    {
+	os << "setting clock to: "; put_time(os, t) << '\n';
+	os << "             UTC: "; put_utc(os, t) << '\n';
+	os << "configuring.\n"
+	      "\n";
+
+	const auto resp = write(dev, tx::SetAppPacket{t, c});
+	os << resp;
 	return 0;
     }
 }
@@ -225,7 +239,7 @@ int main(int argc, char ** argv)
 	    return set_time(dev, os, std::time(nullptr));
 	}
 	else if (opt.configure) {
-	    // ...
+	    return configure(dev, os, c, std::time(nullptr));
 	}
 	else {
 	    return info(dev, os);
