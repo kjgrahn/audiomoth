@@ -37,6 +37,16 @@ hid::Packet tx::GetBattery::encode() const
     return p;
 }
 
+hid::Packet tx::SetAppPacket::encode() const
+{
+    hid::Packet p {};
+    auto it = begin(p);
+    be::put16(it, tag);
+    le::put32(it, t);
+    config.encode(it);
+    return p;
+}
+
 hid::Packet tx::GetFirmwareVersion::encode() const
 {
     hid::Packet p {};

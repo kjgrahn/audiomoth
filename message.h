@@ -1,5 +1,8 @@
 /* -*- c++ -*-
  *
+ * AudioMoth requests and responses.  See the upstream
+ * <https://github.com/OpenAcousticDevices/AudioMoth-HID>.
+ *
  * Copyright (c) 2022 Jörgen Grahn
  * All rights reserved.
  */
@@ -7,6 +10,7 @@
 #define AUDIOMOTH_MESSAGE_H
 
 #include "packet.h"
+#include "cfg/config.h"
 
 #include <ctime>
 #include <string>
@@ -40,6 +44,17 @@ namespace rx {
 	Description(unsigned tag, const hid::Packet& p);
 	std::string val;
     };
+
+    /**
+     * An uninterpreted response, used with SetPacket which is
+     * supposed to echo its parameters back. I don't want to write
+     * code to parse SetPacket parameters; writing the encoders was
+     * bad enough.
+     */
+    struct Packet {
+	Packet(unsigned tag, const hid::Packet& p);
+	hid::Packet val;
+    };
 }
 
 std::ostream& operator<< (std::ostream& os, const rx::Time& val);
@@ -47,6 +62,7 @@ std::ostream& operator<< (std::ostream& os, const rx::Uid& val);
 std::ostream& operator<< (std::ostream& os, const rx::Battery& val);
 std::ostream& operator<< (std::ostream& os, const rx::Version& val);
 std::ostream& operator<< (std::ostream& os, const rx::Description& val);
+std::ostream& operator<< (std::ostream& os, const rx::Packet& val);
 
 namespace tx {
 
@@ -83,7 +99,16 @@ namespace tx {
     };
 
     class GetAppPacket;
-    class SetAppPacket;
+
+    class SetAppPacket : public Message<6> {
+    public:
+	SetAppPacket(time_t t, const Config& config) : t{t}, config{config} {}
+	using response_t = rx::Packet;
+	hid::Packet encode() const;
+    private:
+	const time_t t;
+	const Config config;
+    };
 
     class GetFirmwareVersion : public Message<7> {
     public:

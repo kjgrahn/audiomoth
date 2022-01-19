@@ -4,6 +4,7 @@
 #include "message.h"
 #include "endians.h"
 #include "put_time.h"
+#include "hexdump.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -88,4 +89,25 @@ rx::Description::Description(const unsigned tag,
 std::ostream& operator<< (std::ostream& os, const rx::Description& val)
 {
     return os << val.val;
+}
+
+rx::Packet::Packet(const unsigned tag,
+		   const hid::Packet& packet)
+    : val {packet}
+{
+    auto p = begin(packet);
+    if (le::get8(p) != tag) throw Error {};
+}
+
+std::ostream& operator<< (std::ostream& os, const rx::Packet& val)
+{
+    const void* a = val.val.data();
+    const void* const b = val.val.data() + val.val.size();
+
+    while (a!=b) {
+	char buf[16*3];
+	a = hexdump(buf, sizeof buf, a, b);
+	os << buf << '\n';
+    }
+    return os;
 }
