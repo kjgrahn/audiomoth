@@ -166,7 +166,6 @@ int main(int argc, char ** argv)
 	    break;
 	case 'V':
 	    std::cout << "audiomoth " << version() << '\n'
-		      << "Uses libhidapi " << hid_version_str() << '\n'
 		      << "Copyright (c) 2022 Jörgen Grahn. "
 		      << "All rights reserved.\n";
 	    return 0;
