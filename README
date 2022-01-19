@@ -1,0 +1,43 @@
+NAME
+       audiomoth - command-line interface to the AudioMoth acoustic logger
+
+SYNOPSIS
+       audiomoth [--uid uid] [-i]
+       audiomoth [--uid uid] -T
+       audiomoth [--uid uid] [configuration options ...]
+       audiomoth --help
+       audiomoth --version
+
+DESCRIPTION
+       The AudioMoth is an acoustic logger for outdoors use from Open Acous-
+       tic Devices. This utility lets you configure an AudioMoth and set its
+       clock - like the official utilities, but without pulling in the whole
+       Node.js and React.js ecosystems, and without a GUI.
+
+       audiomoth(1) has four basic operations:
+
+       -  Show the device's time, battery  level,  identifier  and  firmware
+          version.
+
+       -  Set  the device's clock. This is a common operation, since the Au-
+          dioMoth loses time when you replace the batteries.
+
+       -  Configure the device.
+
+       It cannot be used to upgrade the firmware. Nor can it show  the  cur-
+       rent configuration, e.g. recording schedule and gain.
+
+AUTHOR
+       Jörgen Grahn <grahn@snipabacken.se>.
+
+LICENSE
+       The  GNU  General  Public License (GPL) version 2 or (at your option)
+       version 3.
+
+SEE ALSO
+       The AudioMoth Operation Manual. Open Acoustic Devices, July 2021.
+       <https://www.openacousticdevices.info/audiomoth>.
+
+
+For more details, see the man page from which this text
+was extracted.
