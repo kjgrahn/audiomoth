@@ -18,6 +18,7 @@ all: tests
 .PHONY: install
 install: audiomoth
 install: audiomoth.1
+	install -d $(INSTALLBASE)/{bin,man/man1}
 	install -m755 audiomoth $(INSTALLBASE)/bin/
 	install -m644 audiomoth.1 $(INSTALLBASE)/man/man1/
 

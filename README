@@ -37,5 +37,20 @@ SEE ALSO
        <https://www.openacousticdevices.info/audiomoth>.
 
 
-For more details, see the man page from which this text
-was extracted.
+For more details, see the man page from whence this text was ripped.
+
+
+INSTALL
+
+audiomoth(1) builds and runs on Linux. It also builds on OpenBSD,
+but I haven't tried to run it there.
+
+To build and install on Linux, ensure that you have libhidapi and:
+
+  % make audiomoth
+  # make install
+
+To run the unit tests you need orchis, which you get wherever you got
+audiomoth, or at <git:snipabacken.se/orchis>. Then:
+
+  % make check
