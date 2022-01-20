@@ -50,8 +50,9 @@ and without a GUI.
 .\" things nowadays?
 .PP
 .BR audiomoth (1)
-has four basic operations:
+has three basic operations:
 .IP \- 3x
+.PD 0
 Show the device's
 .IR "time" ,
 .IR "battery level" ,
@@ -64,6 +65,7 @@ This is a common operation, since the AudioMoth loses time when you
 replace the batteries.
 .IP \-
 Configure the device.
+.PD
 .PP
 It cannot be used to upgrade the firmware.
 Nor can it
@@ -260,7 +262,7 @@ Non-zero on failure.
 .
 The official AudioMoth configuration tool has a JSON-based configuration file format.
 .BR audiomoth (1)
-cannot read such files, but it's useful to see how command-line options map to such files,
+cannot read such files, but it's useful to see how command-line options map to them,
 since they summarize everything that can be officially configured.
 .
 .PP

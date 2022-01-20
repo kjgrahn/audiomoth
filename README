@@ -14,14 +14,12 @@ DESCRIPTION
        clock - like the official utilities, but without pulling in the whole
        Node.js and React.js ecosystems, and without a GUI.
 
-       audiomoth(1) has four basic operations:
+       audiomoth(1) has three basic operations:
 
        -  Show the device's time, battery  level,  identifier  and  firmware
           version.
-
        -  Set  the device's clock. This is a common operation, since the Au-
           dioMoth loses time when you replace the batteries.
-
        -  Configure the device.
 
        It cannot be used to upgrade the firmware. Nor can it show  the  cur-
