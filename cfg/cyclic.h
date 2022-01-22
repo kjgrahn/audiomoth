@@ -52,7 +52,7 @@ namespace cfg {
     template <class It> It Cyclic::Values::encode(It p) const
     {
 	le::put16(p, sleep);
-	le::put16(p, record);
+	le::put16(p, sleep ? record : 1);
 	return p;
     }
 

@@ -74,7 +74,7 @@ namespace cfg {
 	    get8 ("--rate 48kHz", p, 4, 16, 1);
 	    get32("            ", p, 384000);
 	    get8 ("            ", p, 8);
-	    get16("--cyclic    ", p, 0, 0);
+	    get16("--cyclic    ", p, 0, 1);
 
 	    get8 ("--no-rw-led ", p, 1);
 

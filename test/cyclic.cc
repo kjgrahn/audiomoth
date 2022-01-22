@@ -18,7 +18,7 @@ namespace cfg {
 
     void assert_encodes(const Cyclic& c,
 			unsigned sleep, unsigned record,
-			bool enable)
+			bool disable)
     {
 	orchis::assert_true(c.valid());
 	std::vector<uint8_t> v;
@@ -28,7 +28,7 @@ namespace cfg {
 	auto p = begin(v);
 	assert_eq(le::get16(p), sleep);
 	assert_eq(le::get16(p), record);
-	assert_eq(le::get8(p),  enable);
+	assert_eq(le::get8(p),  disable);
 	orchis::assert_true(p==end(v));
     }
 
@@ -42,7 +42,7 @@ namespace cfg {
 	void empty(TC)
 	{
 	    const Cyclic c;
-	    assert_encodes(c, 0, 0, true);
+	    assert_encodes(c, 0, 1, true);
 	}
 
 	void simple(TC)
