@@ -20,6 +20,7 @@ namespace {
 	char* end;
 	unsigned n = std::strtoul(p, &end, 10);
 	if (*end) n = INVALID;
+	if (!n) n = INVALID;
 	return n;
     }
 }

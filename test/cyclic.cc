@@ -57,5 +57,11 @@ namespace cfg {
 	    assert_invalid(Cyclic{"a+2"});
 	    assert_invalid(Cyclic{"2+a"});
 	}
+
+	void invalid2(TC)
+	{
+	    assert_invalid(Cyclic{"0+10"});
+	    assert_invalid(Cyclic{"10+0"});
+	}
     }
 }
