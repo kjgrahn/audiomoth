@@ -47,7 +47,7 @@ libaudiomoth.a: cfg/samplerate.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
-	$(CXX) $(CXXFLAGS) -o $@ audiomoth.o -L. -laudiomoth -lhidapi-hidraw
+	$(CXX) $(CXXFLAGS) -o $@ audiomoth.o -L. -laudiomoth -lhidapi-libusb
 
 libtest.a: test/utf8.o
 libtest.a: test/hexdump.o
