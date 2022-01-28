@@ -28,15 +28,18 @@ rx::Uid::Uid(const unsigned tag,
 {
     auto p = begin(packet);
     if (le::get8(p) != tag) throw Error {};
-    std::copy(p, p+8, begin(val));
+    std::reverse_copy(p, p+8, begin(val));
 }
 
 std::ostream& operator<< (std::ostream& os, const rx::Uid& val)
 {
     const char* prefix="";
-    for (uint8_t c : val.val) {
-	char buf[4];
-	std::snprintf(buf, sizeof buf, "%s%02hhx", prefix, c);
+    auto p = begin(val.val);
+    while (p != end(val.val)) {
+	uint8_t c = *p++;
+	uint8_t d = *p++;
+	char buf[6];
+	std::snprintf(buf, sizeof buf, "%s%02hhx%02hhx", prefix, c, d);
 	prefix=":";
 	os << buf;
     }

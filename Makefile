@@ -64,6 +64,7 @@ libtest.a: test/passfilter.o
 libtest.a: test/gain.o
 libtest.a: test/samplerate.o
 libtest.a: test/flag.o
+libtest.a: test/uid.o
 	$(AR) $(ARFLAGS) $@ $^
 
 test/%.o: CPPFLAGS+=-I.
