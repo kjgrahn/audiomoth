@@ -22,7 +22,8 @@ namespace cfg {
 			const unsigned a0, const unsigned b0,
 			const unsigned a1, const unsigned b1,
 			const unsigned a2, const unsigned b2,
-			const unsigned a3, const unsigned b3)
+			const unsigned a3, const unsigned b3,
+			const unsigned a4, const unsigned b4)
     {
 	orchis::assert_true(tp.valid());
 	std::vector<uint8_t> v;
@@ -34,6 +35,7 @@ namespace cfg {
 	assert_eq(le::get16(p), a1); assert_eq(le::get16(p), b1);
 	assert_eq(le::get16(p), a2); assert_eq(le::get16(p), b2);
 	assert_eq(le::get16(p), a3); assert_eq(le::get16(p), b3);
+	assert_eq(le::get16(p), a4); assert_eq(le::get16(p), b4);
 	assert_true(p==end(v));
     }
 
@@ -49,7 +51,7 @@ namespace cfg {
 	    TimePeriods tp;
 	    assert_encodes(tp, 0,
 			   0, 0, 0, 0,
-			   0, 0, 0, 0);
+			   0, 0, 0, 0, 0, 0);
 	}
 
 	void simple(TC)
@@ -58,9 +60,8 @@ namespace cfg {
 	    add(tp, "05:30-07:10");
 	    assert_encodes(tp, 1,
 			   330, 430,
-			   0, 0,
-			   0, 0,
-			   0, 0);
+			   0, 0, 0, 0,
+			   0, 0, 0, 0);
 	}
 
 	void always(TC)
@@ -69,9 +70,8 @@ namespace cfg {
 	    add(tp, "05:30+24:00");
 	    assert_encodes(tp, 1,
 			   0, 1440,
-			   0, 0,
-			   0, 0,
-			   0, 0);
+			   0, 0, 0, 0,
+			   0, 0, 0, 0);
 	}
 
 	void duration(TC)
@@ -80,9 +80,8 @@ namespace cfg {
 	    add(tp, "05:30+01:40");
 	    assert_encodes(tp, 1,
 			   330, 430,
-			   0, 0,
-			   0, 0,
-			   0, 0);
+			   0, 0, 0, 0,
+			   0, 0, 0, 0);
 	}
 
 	void duration2(TC)
@@ -91,9 +90,8 @@ namespace cfg {
 	    add(tp, "05:30+100");
 	    assert_encodes(tp, 1,
 			   330, 430,
-			   0, 0,
-			   0, 0,
-			   0, 0);
+			   0, 0, 0, 0,
+			   0, 0, 0, 0);
 	}
 
 	void two(TC)
@@ -104,6 +102,7 @@ namespace cfg {
 	    assert_encodes(tp, 2,
 			    960, 1170,
 			   1230, 1260,
+			   0, 0,
 			   0, 0,
 			   0, 0);
 	}
@@ -117,6 +116,7 @@ namespace cfg {
 			    960, 1170,
 			   1230, 1260,
 			   0, 0,
+			   0, 0,
 			   0, 0);
 	}
 
@@ -129,12 +129,14 @@ namespace cfg {
 			    960, 1170,
 			   1230, 1260,
 			   0, 0,
+			   0, 0,
 			   0, 0);
 	    add(tp, "19:00-19:30");
 	    add(tp, "20:30-20:40");
 	    assert_encodes(tp, 2,
 			    960, 1170,
 			   1230, 1260,
+			   0, 0,
 			   0, 0,
 			   0, 0);
 	    add(tp, "19:00-20:00");
@@ -143,13 +145,13 @@ namespace cfg {
 			    960, 1200,
 			   1220, 1260,
 			   0, 0,
+			   0, 0,
 			   0, 0);
 	    add(tp, "20:00-20:20");
 	    assert_encodes(tp, 1,
 			    960, 1260,
-			   0, 0,
-			   0, 0,
-			   0, 0);
+			   0, 0, 0, 0,
+			   0, 0, 0, 0);
 	}
 
 	void full(TC)
@@ -159,8 +161,10 @@ namespace cfg {
 	    add(tp, "04:00+10");
 	    add(tp, "03:00+10");
 	    add(tp, "02:00+10");
-	    assert_encodes(tp, 4,
+	    add(tp, "01:30+10");
+	    assert_encodes(tp, 5,
 			    60,  70,
+			    90, 100,
 			   120, 130,
 			   180, 190,
 			   240, 250);
@@ -174,6 +178,7 @@ namespace cfg {
 			      0,   90,
 			   1380, 1440,
 			   0, 0,
+			   0, 0,
 			   0, 0);
 	}
 
@@ -186,6 +191,7 @@ namespace cfg {
 	    assert_encodes(tp, 2,
 			      0,  120,
 			   1320, 1440,
+			   0, 0,
 			   0, 0,
 			   0, 0);
 	}

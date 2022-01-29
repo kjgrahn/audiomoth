@@ -70,12 +70,12 @@ bool TimePeriods::add(const std::string& s)
 
 bool TimePeriods::valid() const
 {
-    return ranges.size() <= 4;
+    return ranges.size() <= 5;
 }
 
-std::array<uint8_t, 17> TimePeriods::encode() const
+std::array<uint8_t, 21> TimePeriods::encode() const
 {
-    std::array<uint8_t, 17> v;
+    std::array<uint8_t, 21> v;
     auto a = begin(v);
     const auto b = end(v);
 

@@ -83,6 +83,7 @@ namespace cfg {
 	    get16("            ", p, 0, 0);
 	    get16("            ", p, 0, 0);
 	    get16("            ", p, 0, 0);
+	    get16("            ", p, 0, 0);
 
 	    get8 ("TZ (hours)  ", p, 0);
 	    get8 ("--ignore-low", p, 0);

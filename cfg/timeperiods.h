@@ -37,7 +37,7 @@ namespace cfg {
     private:
 	Ranges ranges;
 
-	std::array<uint8_t, 17> encode() const;
+	std::array<uint8_t, 21> encode() const;
     };
 
     template <class It>
