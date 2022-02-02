@@ -44,6 +44,7 @@ libaudiomoth.a: cfg/dates.o
 libaudiomoth.a: cfg/passfilter.o
 libaudiomoth.a: cfg/gain.o
 libaudiomoth.a: cfg/samplerate.o
+libaudiomoth.a: cfg/trigger.o
 	$(AR) $(ARFLAGS) $@ $^
 
 audiomoth: audiomoth.o libaudiomoth.a
@@ -63,6 +64,7 @@ libtest.a: test/dates.o
 libtest.a: test/passfilter.o
 libtest.a: test/gain.o
 libtest.a: test/samplerate.o
+libtest.a: test/trigger.o
 libtest.a: test/flag.o
 libtest.a: test/uid.o
 	$(AR) $(ARFLAGS) $@ $^
