@@ -221,6 +221,36 @@ Enable the
 .I "band-pass"
 filter: record in a specific frequency band.
 .
+.PP
+.I "Amplitude threshold"
+or
+.I "amplitude-triggered"
+recording means recording only during and soon after loud sounds,
+like bat calls or gunshots.
+(A bat call would probably also need a high-pass filter.)
+These recordings are saved in a special file format:
+neither individual files nor one long file with silent periods.
+.
+.BP "--trigger \fIamplitude\fP%"
+Set the trigger or threshold to a certain percentage of max amplitude.
+Valid values are from
+.B 0%
+to
+.BR 100% ,
+without fractions.
+.IP
+It is a bit unclear what 50% means, and the official tool also supports
+specifying the threshold as a raw amplitude or in dB.
+Whatever it means, 50% should be equivalent to placing the official slider
+in the middle of its range.
+.
+.BP "--duration \fIseconds"
+Record for at least
+.I seconds
+after an amplitude trigger.
+You can specify 0\-60 seconds, and there is no default: if you enable
+triggered recording you have to choose a duration.
+.
 .BP "--elephants"
 Disable the filter which removes very low frequency buzz.
 This is supposedly useful when recording elephants.
@@ -306,9 +336,11 @@ since they summarize everything that can be officially configured.
 --highpass, --lowpass, --bandpass
 .
 .IP "amplitudeThresholdingEnabled"
+.B --trigger
 .IP "amplitudeThreshold"
-.IP "minimumAmplitudeThresholdDuration"
 .IP "amplitudeThresholdingScale"
+.IP "minimumAmplitudeThresholdDuration"
+.B --duration
 .
 .IP "version"
 not used

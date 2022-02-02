@@ -119,6 +119,8 @@ int main(int argc, char ** argv)
 	{"dates",  1,0, 'D'},        {"lowpass",  1,0,'q'},
 	{"gain",   1,0, 'G'},        {"bandpass", 1,0,'r'},
 	{"rate",   1,0, 'R'},
+	{"trigger",      1,0, 'X'},
+	{"duration",     1,0, 'x'},
 	{"elephants",    0,0, 'E'},  {"NiMH",     0,0,'N'},
 	{"need-chime",   0,0, '*'},  {"LiPo",     0,0,'N'},
 	{"energy-saver", 0,0, 'e'},  {"alkaline", 0,0,'a'},
@@ -134,6 +136,7 @@ int main(int argc, char ** argv)
 	bool set_time = false;
 	bool configure = false;
 	std::string uid;
+	cfg::Trigger trigger;
     } opt;
     Config c;
 
@@ -164,6 +167,9 @@ int main(int argc, char ** argv)
 	case 'p': c.filter = {cfg::PassFilter::HIGH, optarg}; break;
 	case 'q': c.filter = {cfg::PassFilter::LOW, optarg}; break;
 	case 'r': c.filter = {cfg::PassFilter::BAND, optarg}; break;
+
+	case 'X': opt.trigger.amplitude(optarg); break;
+	case 'x': opt.trigger.duration(optarg); break;
 
 	case 'E': c.elephants = true; break;
 	case '*': c.need_chime = true; break;
@@ -215,6 +221,14 @@ int main(int argc, char ** argv)
 	    return 1;
 	}
     }
+
+    if (!opt.trigger.valid()) {
+	std::cerr << "error: bad --trigger or --duration argument\n"
+		  << usage << '\n';
+	return 1;
+    }
+
+    c.amplitude_triggered = opt.trigger;
 
     if (optind != argc) {
 	std::cerr << "error: too many arguments\n"
