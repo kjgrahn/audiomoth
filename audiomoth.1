@@ -4,7 +4,7 @@
 ..
 .hw areas
 .
-.TH audiomoth 1 "JAN 2021" AudioMoth "User Manuals"
+.TH audiomoth 1 "FEB 2021" AudioMoth "User Manuals"
 .SH "NAME"
 audiomoth \- command-line interface to the AudioMoth acoustic logger
 .
@@ -232,7 +232,7 @@ mode, don't start the recording program
 until the device has heard the chime from some smartphone app.
 .
 .BP "--energy-saver"
-Trade some (not much, apparently) audio quality for longer battery time:
+Trade some (not much, apparently) audio quality for longer battery life:
 around 30\-40% better.
 At sampling rates above 48\|kHz there are no savings.
 .
@@ -378,7 +378,12 @@ uses
 for USB access, and is (since there appears to be no firmware API documentation)
 based on the
 .I "Open Acoustic Devices"
-Javascript code.
+Javascript and C code:
+Configuration-App,
+HID,
+USB-HID-Tool
+and
+Firmware-Basic.
 .
 .SH "LICENSE"
 The GNU General Public License (GPL) version 2 or (at your option) version 3.
