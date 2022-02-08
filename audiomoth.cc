@@ -36,7 +36,7 @@ namespace {
 
     const char* version()
     {
-	return "1.1";
+	return "1.2";
     }
 
     std::ostream& complain(std::ostream& os, const option* p,
