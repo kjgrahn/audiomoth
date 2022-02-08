@@ -373,9 +373,11 @@ some users. When should I drive the 200 kilometers to switch batteries?
 For how long can I record every morning, if I want to cover all of June?
 .
 .IP \-
-.I "Amplitude threshold recording"
+.I "Amplitude-triggered recording"
 \- letting loud or distinct sounds start the recording \-
-is still unsupported.
+is supported, but specifying the threshold in decibels or as
+\[lq]raw 16-bit amplitude\[rq] isn't. You have to specify a percentage.
+This does not seem to be a major drawback.
 .
 .IP \-
 Anything having to do with time zones is unsupported:
@@ -392,6 +394,10 @@ As mentioned above,
 it would have been useful if you could list the current configuration of a device,
 and modify only selected parameters.
 It is unclear if this is technically possible.
+.IP
+There is a file
+.SM "CONFIG.TXT"
+on the SD card, which describes the latest configuration.
 .
 .IP \-
 It is unclear how to handle multiple devices attached to one computer;
